@@ -3,8 +3,11 @@ package com.katza.guyapplication;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,10 +19,12 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageView star;
-    Button btn1, btn2, btn3;
-    Button send;
+
+    ImageView star, microphone;
+    Button btn1, btn2, btn3, send;
     EditText guessnum;
+    Switch sw;
+    SeekBar sb;
 
     int randomNumber; // המספר הרנדומלי שיש לשער
 
@@ -36,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         initViews();
-
-        // הפעם נגריל את המספר רק פעם אחת בהתחלה
         generateRandomNumber();
     }
 
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
+        // כפתורים
         btn1 = findViewById(R.id.btn1);
         btn1.setOnClickListener(this);
 
@@ -54,14 +58,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn2.setOnClickListener(this);
 
         btn3 = findViewById(R.id.btn3);
-        btn3.setOnClickListener(v ->
-                Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show()
-        );
+        btn3.setOnClickListener(v -> Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show());
 
+        // תמונות וערכים
         star = findViewById(R.id.imageView);
+        microphone = findViewById(R.id.microphone);
         guessnum = findViewById(R.id.guessnum);
         send = findViewById(R.id.send);
 
+        // סוויץ' להפעלת מיקרופון
+        sw = findViewById(R.id.sw);
+        sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                microphone.setVisibility(View.VISIBLE);
+            } else {
+                microphone.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // ************ SEEK BAR לבהירות הכוכב ************
+        sb = findViewById(R.id.sb);
+        sb.setMax(100);         // טווח מ-0 עד 100
+        sb.setProgress(100);    // מתחיל בבהירות מלאה (100%)
+
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float alpha = progress / 100f; // מ-0 עד 1
+                star.setAlpha(alpha);          // יותר ימינה – יותר בהיר
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        // כפתור לשליחת ניחוש
         send.setOnClickListener(v -> {
             String input = guessnum.getText().toString();
 
@@ -91,11 +125,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.btn1) {
             Toast.makeText(this, "Click other button", Toast.LENGTH_SHORT).show();
             star.setVisibility(View.VISIBLE);
-        } else if (v == btn2) {
-            Toast.makeText(this, "click other button", Toast.LENGTH_SHORT).show();
+        } else if (v.getId() == R.id.btn2) {
+            Toast.makeText(this, "Click other button", Toast.LENGTH_SHORT).show();
             star.setVisibility(View.INVISIBLE);
         } else {
-            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
     }
 }
+
