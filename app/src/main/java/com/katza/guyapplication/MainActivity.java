@@ -1,16 +1,21 @@
 package com.katza.guyapplication;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText guessnum;
     Switch sw;
     SeekBar sb;
+    TextView tv;
 
     int randomNumber; // המספר הרנדומלי שיש לשער
 
@@ -42,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initViews();
         generateRandomNumber();
+
+        tv = findViewById(R.id.tv);
+        registerForContextMenu(tv);
     }
 
     private void generateRandomNumber() {
@@ -50,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
+
         // כפתורים
         btn1 = findViewById(R.id.btn1);
         btn1.setOnClickListener(this);
@@ -58,66 +68,117 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn2.setOnClickListener(this);
 
         btn3 = findViewById(R.id.btn3);
-        btn3.setOnClickListener(v -> Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show());
+        btn3.setOnClickListener(v ->
+                Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show()
+        );
 
-        // תמונות וערכים
+        // תמונות ושדות
         star = findViewById(R.id.imageView);
         microphone = findViewById(R.id.microphone);
         guessnum = findViewById(R.id.guessnum);
         send = findViewById(R.id.send);
 
-        // סוויץ' להפעלת מיקרופון
+        // סוויץ' למיקרופון
         sw = findViewById(R.id.sw);
         sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                microphone.setVisibility(View.VISIBLE);
-            } else {
-                microphone.setVisibility(View.INVISIBLE);
-            }
+            microphone.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
         });
 
-        // ************ SEEK BAR לבהירות הכוכב ************
+        // SeekBar לבהירות הכוכב
         sb = findViewById(R.id.sb);
-        sb.setMax(100);         // טווח מ-0 עד 100
-        sb.setProgress(100);    // מתחיל בבהירות מלאה (100%)
+        sb.setMax(100);
+        sb.setProgress(100);
 
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float alpha = progress / 100f; // מ-0 עד 1
-                star.setAlpha(alpha);          // יותר ימינה – יותר בהיר
+                float alpha = progress / 100f;
+                star.setAlpha(alpha);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
-        // כפתור לשליחת ניחוש
+        // כפתור שליחת ניחוש
         send.setOnClickListener(v -> {
             String input = guessnum.getText().toString();
 
             if (input.isEmpty()) {
-                Toast.makeText(MainActivity.this, "אנא הזן מספר בין 1 ל-10", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,
+                        "אנא הזן מספר בין 1 ל-10",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
             int userNumber = Integer.parseInt(input);
 
             if (userNumber < 1 || userNumber > 10) {
-                Toast.makeText(MainActivity.this, "הזן מספר בין 1 ל-10", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,
+                        "הזן מספר בין 1 ל-10",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (userNumber == randomNumber) {
-                Toast.makeText(MainActivity.this, "ניחוש נכון! המספר היה " + randomNumber, Toast.LENGTH_SHORT).show();
-                generateRandomNumber(); // מתחילים משחק חדש
+                Toast.makeText(MainActivity.this,
+                        "ניחוש נכון! המספר היה " + randomNumber,
+                        Toast.LENGTH_SHORT).show();
+                generateRandomNumber();
             } else {
-                Toast.makeText(MainActivity.this, "לא נכון, נסה שוב!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,
+                        "לא נכון, נסה שוב!",
+                        Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // תפריט עליון
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_login) {
+            Toast.makeText(this, "you selected login", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_register) {
+            Toast.makeText(this, "you selected register", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_start) {
+            Toast.makeText(this, "you selected start", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        // בודק את פריטי הקונטקסט-מניו
+        if (item.getItemId() == R.id.firstline) {
+            Toast.makeText(this, "you selected first line", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (item.getItemId() == R.id.secondline) {
+            Toast.makeText(this, "you selected second line", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

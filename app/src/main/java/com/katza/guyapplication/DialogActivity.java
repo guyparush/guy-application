@@ -9,9 +9,7 @@ import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class DialogActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -31,5 +29,12 @@ public class DialogActivity extends AppCompatActivity
         btnLogin.setOnClickListener(this);
 
         sp = getSharedPreferences("details1", 0);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main));
+    }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnLogin) {
+            // פעולה בלחיצה
+        }
+    }
+}

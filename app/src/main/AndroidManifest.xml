@@ -11,27 +11,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GuyApplication">
+
         <activity
             android:name=".DialogActivity"
             android:exported="false" />
+
         <activity
             android:name=".CostumActivity"
             android:exported="false" />
+
         <activity
             android:name=".DynamicActivity"
             android:exported="false" />
-        <activity
-            android:name=".MainActivity2"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".MainActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".MainActivity2"
             android:exported="false" />
+
     </application>
 
 </manifest>
