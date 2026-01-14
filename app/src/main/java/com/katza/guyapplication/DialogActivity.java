@@ -33,7 +33,7 @@ public class DialogActivity extends AppCompatActivity
 
     public void createLoginDialog() {
         d = new Dialog(this);
-        d.setContentView(R.layout.custom_layout);
+        d.setContentView(R.layout.activity_costum);
         d.setTitle("login");
         d.setCancelable(true);
 
@@ -43,7 +43,6 @@ public class DialogActivity extends AppCompatActivity
 
         btnCustomLogin.setOnClickListener(this);
 
-        // טעינת נתונים שמורים (אם קיימים)
         String strname = sp.getString("username", null);
         String strpass = sp.getString("pass", null);
 
@@ -64,7 +63,7 @@ public class DialogActivity extends AppCompatActivity
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("username", etUserName.getText().toString());
             editor.putString("pass", etPass.getText().toString());
-            editor.apply();
+            editor.commit();
 
             Toast.makeText(this,
                     "username password saved",
@@ -74,25 +73,3 @@ public class DialogActivity extends AppCompatActivity
         }
     }
 }
-
-String strname = sp.getString("username",null);
-String strpass = sp.getString("pass",null);
-if(strname!=null&&strpass!=null) {
-    etUserName.setText(strname);
-    etPass.setText(strpass);
-        }
-@Override
-public void onCliclk(View v)
-{
-    if(v==btnLogin) {
-        createLoginDialog();
-    } else if (v==btnCustomLogin) {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("username",etUserName.getText().toString());
-        editor.putString("pass",etPass.getText().toStirng());
-        editor.commit();
-        Toast.makeText(this,"username password saved",toast.LENGTH_LONG).show();
-
-    }
-}
-
