@@ -6,13 +6,43 @@
     android:gravity="center"
     android:padding="16dp">
 
+    <!-- TextView for Name -->
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="שם: "
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- TextView for Age -->
+    <TextView
+        android:id="@+id/tvAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="גיל: "
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- TextView for Gender -->
+    <TextView
+        android:id="@+id/tvGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="זכר: "
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- EditText for Birth Year -->
     <EditText
         android:id="@+id/etBirthYear"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="שנת לידה"
-        android:inputType="number"/>
+        android:hint="הכנס שנת לידה"
+        android:inputType="number"
+        android:layout_marginBottom="16dp" />
 
+    <!-- Button for Confirming Birth Year -->
     <Button
         android:id="@+id/btnConfirm"
         android:layout_width="wrap_content"
